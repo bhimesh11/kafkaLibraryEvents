@@ -1,0 +1,1 @@
+package com.kafkaproject.libraryeventsconsumer.config;

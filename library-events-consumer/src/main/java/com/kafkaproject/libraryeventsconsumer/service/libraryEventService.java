@@ -46,16 +46,16 @@ public class libraryEventService  {
     private void deleteObject(LibraryEvent libraryEvent, Book book) {
 
         log.info("Process beginning for deleting the event");
-        Optional<Book> bookId = libraryEventRepository.findByBookId(book.getBookId());
-        if(bookId.isEmpty())
+        Optional<Book> existingBookId = libraryEventRepository.findByBookId(libraryEvent.getBook().getBookId());
+        if(existingBookId.isEmpty())
         {
             log.info("No record avaialble with give bookid");
         }
         else {
-            libraryEventRepository.delete(libraryEvent  );
-
+            libraryEventRepository.deleteEventByBookId(libraryEvent.getBook().getBookId());
                 log.info("Record delete sucessfully");
         }
+        log.info("void");
         }
 
     private void updateObject(LibraryEvent libraryEvent)

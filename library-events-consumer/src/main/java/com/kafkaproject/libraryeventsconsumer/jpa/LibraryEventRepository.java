@@ -2,6 +2,8 @@ package com.kafkaproject.libraryeventsconsumer.jpa;
 
 import com.kafkaproject.libraryeventsconsumer.entity.Book;
 import com.kafkaproject.libraryeventsconsumer.entity.LibraryEvent;
+import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -16,8 +18,8 @@ public interface LibraryEventRepository extends CrudRepository<LibraryEvent,Inte
 @Query("select b from Book b where b.bookId =:bookId ")
 public Optional<Book> findByBookId(@Param("bookId") int bookid);
 
-//@Modifying
-//@Transactional
-//@Query("delete from Book b where b.bookId =:bookid")
-//public Integer deleteEventbyBookId(int bookId);
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM Book b WHERE b.bookId = :bookId")
+    void deleteEventByBookId(@Param("bookId") int bookId);
 }

@@ -29,9 +29,11 @@ public class libraryEventService  {
      {
          case NEW -> SaveObject(libraryEvent);
              //save operation;
-         case UPDATE ->
+         case UPDATE -> {
              //update Operation
              updateObject(libraryEvent);
+             SaveObject(libraryEvent);
+         }
 
          case DELETE -> {
              if(libraryEvent.getLibraryEventId()!=null) {
@@ -62,15 +64,12 @@ public class libraryEventService  {
     {
 if(libraryEvent.getLibraryEventId()==null)
 {
-    throw new RuntimeException();
+    throw new IllegalArgumentException("library event is missing");
 }
         Optional<LibraryEvent> check = libraryEventRepository.findById(libraryEvent.getLibraryEventId());
-if(check==null)
+if(!check.isPresent())
 {
-    log.info("No Records feteched with given event id");
-}
-else {
-    SaveObject(libraryEvent);
+    throw new IllegalArgumentException("Not a valid library event");
 }
     }
 

@@ -9,6 +9,7 @@ import com.kafkaproject.libraryeventsconsumer.jpa.LibraryEventRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.RecoverableDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -25,7 +26,12 @@ public class libraryEventService  {
      LibraryEvent libraryEvent =  objectMapper.readValue(consumerRecord.value(), LibraryEvent.class);
      log.info("Process Beginning..");
      log.info("Library Event {} ", libraryEvent);
-     switch (libraryEvent.getLibraryEventType())
+
+        if(libraryEvent.getLibraryEventId()!=null && ( libraryEvent.getLibraryEventId()==999 )){
+            throw new RecoverableDataAccessException("Temporary Network Issue");
+        }
+
+        switch (libraryEvent.getLibraryEventType())
      {
          case NEW -> SaveObject(libraryEvent);
              //save operation;

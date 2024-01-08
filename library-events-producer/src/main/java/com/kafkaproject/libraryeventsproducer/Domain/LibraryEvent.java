@@ -10,7 +10,7 @@ public record LibraryEvent(
         LibraryEventType libraryEventType,
 
         @NotNull
-                @Valid
+        @Valid
         Book book
 ) {
 }
